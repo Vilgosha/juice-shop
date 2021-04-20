@@ -17,7 +17,7 @@ pipeline{
         }
         stage ('get src from git') {
             steps {
-                git url: "$(gitProject)"
+                git url: "${gitProject}"
             }
         }
         stage ('run tests') {
