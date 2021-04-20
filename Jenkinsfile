@@ -36,7 +36,7 @@ pipeline{
         stage ('docker publish') {
             steps {
                 script {
-                    docker.withRegistry("${registry}${imageName}", "${registryCred}") {
+                    docker.withRegistry("${registry}/${imageName}", "${registryCred}") {
                         dockerImage.push()
                         dockerImage.push("${version}")
                     }
@@ -45,7 +45,7 @@ pipeline{
         }
         stage ('cleaning') {
             steps {
-                sh 'docker rmi -f ${docker images -a -q}'
+                sh 'docker rmi -f $(docker images -a -q)'
             }
         }
     }
