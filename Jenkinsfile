@@ -38,14 +38,14 @@ pipeline{
                 script {
                     docker.withRegistry("${registry}${imageName}", "${registryCred}") {
                         dockerImage.push()
-                        dockerImage.push("${}version")
+                        dockerImage.push("${version}")
                     }
                 }
             }
         }
         stage ('cleaning') {
             steps {
-                sh 'docker rmi -f $(docker images -a -q)'
+                sh 'docker rmi -f ${docker images -a -q}'
             }
         }
     }
