@@ -1,7 +1,4 @@
 pipeline{
-    parameters{
-        string{defaultValue: "0.0.1", description: "application Version", name: "version"}
-    }
     environment {
         registry = "https://hub.docker.com/u/vilgosha"
         imageName = 'debian'
