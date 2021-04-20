@@ -1,9 +1,9 @@
-pipeline{
+pipeline {
     environment {
-        registry = "https://hub.docker.com/u/vilgosha"
+        registry = "vilgosha/debian"
         imageName = 'debian'
         registryCred = 'vilgosha'
-        gitProject = "https://github.com/Vilgosha/juice-shop.git"
+        gitProject = "https://github.com/vilgosha/juice-shop.git"
     }
     agent any
     options {
@@ -17,7 +17,7 @@ pipeline{
         }
         stage ('get src from git') {
             steps {
-                git url: "${gitProject}"
+                git 'https://github.com/tslaceo/juice-shop.git'
             }
         }
         stage ('run tests') {
@@ -28,24 +28,22 @@ pipeline{
         stage ('build docker') {
             steps {
                 script {
-                    //hub.docker.com/u/vilgosha + / + my-juicy-shop = vilgohsa/my-juicy-shop
-                    dockerImage = docker.build("${registry}/${imageName}")
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
         }
         stage ('docker publish') {
             steps {
                 script {
-                    docker.withRegistry("${registry}/${imageName}", "${registryCred}") {
+                    docker.withRegistry( '', registryCred ) {
                         dockerImage.push()
-                        dockerImage.push("${version}")
                     }
                 }
             }
         }
         stage ('cleaning') {
             steps {
-                sh 'docker rmi -f $(docker images -a -q)'
+                sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
