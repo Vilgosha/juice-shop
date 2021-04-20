@@ -17,7 +17,7 @@ pipeline {
         }
         stage ('get src from git') {
             steps {
-                git 'https://github.com/tslaceo/juice-shop.git'
+                git 'https://github.com/vilgosha/juice-shop.git'
             }
         }
         stage ('run tests') {
